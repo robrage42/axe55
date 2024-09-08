@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<VBox fx:id="boxMain" alignment="CENTER_LEFT" styleClass="app-header" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dsc.insights.ux.AppHeader">
+   <children>
+      <HBox alignment="CENTER_LEFT" spacing="2.0">
+         <children>
+             <ImageView fx:id="imageLogo" fitHeight="48.0" pickOnBounds="true" preserveRatio="true">
+                 <image>
+                     <Image url="@/com/dsc/insights/logo.png" />
+                 </image>
+             </ImageView>
+            <VBox>
+               <children>
+                   <Text styleClass="dsci-name" text="DSC Insights" />
+                   <Text styleClass="dsci-app-name" text="Assessment Toolkit" />
+               </children>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </VBox>
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+               <children>
+                   <Label fx:id="labelMessage" styleClass="message-label" HBox.hgrow="ALWAYS" />
+               </children>
+               <padding>
+                  <Insets left="25.0" right="25.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" spacing="2.0">
+               <children>
+                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" maxHeight="28.0" maxWidth="32.0" mnemonicParsing="false" onAction="#onMinimize" prefHeight="28.0" prefWidth="32.0" styleClass="window-size-button">
+                      <graphic>
+                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                  <Image url="@/com/dsc/insights/icons/minimize.png" />
+                              </image>
+                          </ImageView>
+                      </graphic>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="-5.0" left="-5.0" right="-5.0" top="-5.0" />
+                     </padding>
+                  </Button>
+                   <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" maxHeight="28.0" maxWidth="32.0" mnemonicParsing="false" onAction="#onMaximize" prefHeight="28.0" prefWidth="32.0" styleClass="window-size-button">
+                       <graphic>
+                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                               <image>
+                                   <Image url="@/com/dsc/insights/icons/maximize.png" />
+                               </image>
+                           </ImageView>
+                       </graphic>
+                       <HBox.margin>
+                           <Insets />
+                       </HBox.margin>
+                     <padding>
+                        <Insets bottom="-5.0" left="-5.0" right="-5.0" top="-5.0" />
+                     </padding>
+                   </Button>
+                   <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" maxHeight="28.0" maxWidth="32.0" mnemonicParsing="false" onAction="#onClose" prefHeight="28.0" prefWidth="32.0" styleClass="window-size-button">
+                       <graphic>
+                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                               <image>
+                                   <Image url="@/com/dsc/insights/icons/close.png" />
+                               </image>
+                           </ImageView>
+                       </graphic>
+                       <HBox.margin>
+                           <Insets />
+                       </HBox.margin>
+                     <padding>
+                        <Insets bottom="-5.0" left="-5.0" right="-5.0" top="-5.0" />
+                     </padding>
+                   </Button>
+               </children>
+               <padding>
+                  <Insets right="5.0" top="5.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </padding>
+      </HBox>
+       <HBox alignment="CENTER_LEFT" spacing="5.0" style="-fx-background-color: rgba(20,20,20,0.8);" HBox.hgrow="ALWAYS">
+           <children>
+               <HBox fx:id="boxBreadcrumb" alignment="CENTER_LEFT" />
+               <Region HBox.hgrow="ALWAYS" />
+           </children>
+           <padding>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+           </padding>
+       </HBox>
+   </children>
+</VBox>

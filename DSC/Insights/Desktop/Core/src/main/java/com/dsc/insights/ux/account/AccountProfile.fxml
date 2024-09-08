@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<VBox fx:id="boxMain" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dsc.insights.ux.account.AccountProfile">
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+    <children>
+        <VBox spacing="10.0" VBox.vgrow="ALWAYS">
+            <children>
+            <VBox styleClass="app-section">
+               <children>
+                      <HBox alignment="CENTER_LEFT" spacing="5.0">
+                          <children>
+                              <Label styleClass="section-title" text="Publisher Profile" />
+                          </children>
+                      </HBox>
+                      <HBox spacing="5.0">
+                          <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                          </padding>
+                          <children>
+                              <VBox alignment="CENTER">
+                                  <children>
+                                      <ImageView fx:id="ivLogo" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                                          <image>
+                                              <Image url="@/com/dsc/insights/icons/account.png" />
+                                          </image>
+                                      </ImageView>
+                                  </children>
+                                  <padding>
+                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                  </padding>
+                              </VBox>
+                              <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                  <children>
+                                      <TextField fx:id="textKey" editable="false" promptText="Publisher Key" />
+                                      <TextField fx:id="textNamespace" promptText="Publisher Namespace" />
+                                      <TextField fx:id="textName" promptText="Publisher Name" />
+                                  </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                              </VBox>
+                         <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                             <children>
+                                      <TextField fx:id="textURL" promptText="Publisher URL" />
+                                      <TextArea fx:id="taSummary" maxHeight="60.0" promptText="Publisher Summary" wrapText="true" />
+                             </children>
+                             <padding>
+                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                             </padding>
+                         </VBox>
+                          </children>
+                      </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+            <VBox spacing="5.0" styleClass="app-section">
+               <children>
+                        <Label styleClass="section-title" text="Publishers Developers Key" />
+                        <TextField fx:id="textDevKey" promptText="Publisher Developer's Key" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+            <HBox spacing="10.0">
+               <children>
+                    <VBox alignment="CENTER_LEFT" spacing="5.0" styleClass="app-section" HBox.hgrow="ALWAYS">
+                        <children>
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label styleClass="section-title" text="Billing Contact" />
+                           </children>
+                        </HBox>
+                                <TextField fx:id="textBillingEmail" promptText="Billing Email" />
+                                <TextField fx:id="textBillingPhone" promptText="Billing Phone" />
+                            <TextField fx:id="textBillingURL" promptText="Billing URL" />
+                            </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                    </VBox>
+                   <VBox alignment="CENTER_LEFT" spacing="5.0" styleClass="app-section" HBox.hgrow="ALWAYS">
+                       <children>
+                           <HBox alignment="CENTER_LEFT">
+                               <children>
+                                   <Label styleClass="section-title" text="Sales Contact" />
+                               </children>
+                           </HBox>
+                           <TextField fx:id="textSalesEmail" promptText="Sales Email" />
+                           <TextField fx:id="textSalesPhone" promptText="Sales Phone" />
+                           <TextField fx:id="textSalesURL" promptText="Sales URL" />
+                       </children>
+                       <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                       </padding>
+                   </VBox>
+               </children>
+            </HBox>
+            <HBox spacing="10.0">
+               <children>
+                   <VBox alignment="CENTER_LEFT" spacing="5.0" styleClass="app-section" HBox.hgrow="ALWAYS">
+                       <children>
+                           <HBox alignment="CENTER_LEFT">
+                               <children>
+                                   <Label styleClass="section-title" text="Technical Contact" />
+                               </children>
+                           </HBox>
+                           <TextField fx:id="textTechEmail" promptText="Technical Email" />
+                           <TextField fx:id="textTechPhone" promptText="Technical Phone" />
+                           <TextField fx:id="textTechURL" promptText="Technical URL" />
+                       </children>
+                       <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                       </padding>
+                   </VBox>
+                   <VBox alignment="CENTER_LEFT" spacing="5.0" styleClass="app-section" HBox.hgrow="ALWAYS">
+                       <children>
+                           <HBox alignment="CENTER_LEFT">
+                               <children>
+                                   <Label styleClass="section-title" text="Support Contact" />
+                               </children>
+                           </HBox>
+                           <TextField fx:id="textSupportEmail" promptText="Support Email" />
+                           <TextField fx:id="textSupportPhone" promptText="Support Phone" />
+                           <TextField fx:id="textSupportURL" promptText="Support URL" />
+                       </children>
+                       <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                       </padding>
+                   </VBox>
+               </children>
+            </HBox>
+                <HBox alignment="CENTER_RIGHT" spacing="5.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+                  <Region HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#onUpdate" text="Update" />
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>

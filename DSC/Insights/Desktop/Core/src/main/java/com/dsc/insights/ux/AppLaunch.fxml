@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<VBox fx:id="boxMain" alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dsc.insights.ux.AppLaunch">
+    <children>
+        <VBox alignment="TOP_CENTER" maxWidth="700.0" prefWidth="700.0" spacing="5.0">
+            <children>
+                <Label styleClass="section-title" text="Launching DSC Insights...." />
+                <VBox fx:id="boxStatusCards" alignment="CENTER" spacing="5.0" />
+            </children>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    </padding>
+</VBox>
