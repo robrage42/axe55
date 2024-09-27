@@ -187,6 +187,7 @@ public class AccountViewer implements IUXView
             });
 
             ir.getMainPane().getStyleClass().add("card-status");
+            ir.getLabel(0).getStyleClass().add("card-status-title");
             ir.getMainPane().getStyleClass().add("clickable");
             ir.getMainPane().setPadding(new Insets(10, 10, 10, 10));
 

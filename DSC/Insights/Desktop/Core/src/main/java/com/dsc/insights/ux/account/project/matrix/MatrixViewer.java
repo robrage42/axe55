@@ -1,4 +1,4 @@
-package com.dsc.insights.ux.account.project;
+package com.dsc.insights.ux.account.project.matrix;
 
 import com.dsc.insights.AppImages;
 import com.dsc.insights.DSCI;
@@ -7,9 +7,7 @@ import com.dsc.insights.core.account.AccountSettings;
 import com.dsc.insights.core.matrix.MatrixInstance;
 import com.dsc.insights.core.matrix.MatrixSettings;
 import com.dsc.insights.core.platform.PlatformInstance;
-import com.dsc.insights.core.platform.PlatformSettings;
 import com.dsc.insights.core.project.ProjectInstance;
-import com.dsc.insights.core.project.ProjectSettings;
 import com.dsc.insights.ux.AppNavigator;
 import com.dsc.insights.ux.AppUXController;
 import com.pxg.jfx.controls.IBreadcrumbListener;
@@ -19,15 +17,10 @@ import com.pxg.jfx.mwa.IUXView;
 import com.pxg.jfx.mwa.Message;
 import com.pxg.jfx.mwa.MessageLevel;
 import com.pxg.jfx.mwa.UXInstance;
-import com.pxg.jfx.sir.SIRFactory;
-import com.pxg.jfx.sir.SIRImageVLabel;
-import com.pxg.jfx.sir.SIRListener;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
 import java.awt.image.BufferedImage;
@@ -35,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ProjectViewer implements IUXView
+public class MatrixViewer implements IUXView
 {
     @FXML
     private VBox boxMain;
@@ -45,22 +38,22 @@ public class ProjectViewer implements IUXView
     private TextField textKey;
     @FXML
     private TextField textName;
-    @FXML
-    private FlowPane flowMatrixes;
-    @FXML
-    private FlowPane flowPlatforms;
 
-    private final String APP_VIEW = "ProjectViewer";
+    private final String APP_VIEW = "MatrixViewer";
 
     private UXInstance uxInstance;
     private AppUXController appController;
 
     private String accountKey;
     private String projectUID;
+    private String platformUID;
+    private String matrixUID;
 
     private AccountInstance accountInstance;
     private AccountSettings accountSettings;
     private ProjectInstance projectInstance;
+    private PlatformInstance platformInstance;
+    private MatrixInstance matrixInstance;
 
     @FXML
     private void initialize()
@@ -70,7 +63,7 @@ public class ProjectViewer implements IUXView
             @Override
             public void onImageLoaded(BufferedImage bi, String sourceURL)
             {
-                boolean saved = projectInstance.saveLogo(bi);
+                boolean saved = matrixInstance.saveLogo(bi);
                 if (saved == false)
                 {
                     uxInstance.showMessage(new Message(MessageLevel.ERROR, APP_VIEW, "Error updating logo", 5000));
@@ -95,15 +88,14 @@ public class ProjectViewer implements IUXView
 
         accountKey = (String)params.get("ACCOUNT_KEY");
         projectUID = (String)params.get("PROJECT_UID");
+        matrixUID = (String)params.get("MATRIX_UID");
 
         accountInstance = DSCI.getInstance().getAccountMananger().getAccount(accountKey);
         accountSettings = accountInstance.getSettings();
         projectInstance = accountInstance.getProject(projectUID);
+        matrixInstance = projectInstance.getMatrix(matrixUID);
 
         loadUX();
-
-        loadMatrixes();
-        loadPlatforms();
 
         loadBreadcrumbs();
 
@@ -128,18 +120,6 @@ public class ProjectViewer implements IUXView
 
     }
 
-    @FXML
-    private void onCreatePlatform()
-    {
-        AppNavigator.showPlatformCreate(accountKey, projectUID);
-    }
-
-    @FXML
-    private void onCreateMatrix()
-    {
-        AppNavigator.showMatrixCreate(accountKey, projectUID);
-    }
-
     private void layoutUX(long showTime, boolean onResize)
     {
 //        Timeline timeline = new Timeline();
@@ -159,6 +139,10 @@ public class ProjectViewer implements IUXView
         labels.add(accountSettings.getName());
         labels.add("Projects");
         labels.add(projectInstance.getSettings().getName());
+        labels.add("Platforms");
+        labels.add(platformInstance.getSettings().getName());
+        labels.add("Matrix");
+        labels.add(matrixInstance.getSettings().getName());
 
         appController.getAppHeader().loadBreadcrumb(labels, new IBreadcrumbListener()
         {
@@ -169,9 +153,17 @@ public class ProjectViewer implements IUXView
                 {
                     AppNavigator.showAppHome();
                 }
-                else
+                if (pos == 2 || pos == 3)
                 {
                     AppNavigator.showAccountViewer(accountKey);
+                }
+                else if (pos == 4 || pos == 5)
+                {
+                    AppNavigator.showProjectViewer(accountKey, projectUID);
+                }
+                else
+                {
+                    AppNavigator.showPlatformViewer(accountKey, projectUID, platformUID);
                 }
             }
         });
@@ -179,86 +171,20 @@ public class ProjectViewer implements IUXView
 
     private void loadUX()
     {
-        ProjectSettings settings = projectInstance.getSettings();
+        MatrixSettings settings = matrixInstance.getSettings();
 
-        Image imageLogo = projectInstance.getLogo();
+        Image imageLogo = matrixInstance.getLogo();
         if (imageLogo != null)
         {
             ivLogo.setImage(imageLogo);
         }
         else
         {
-            ivLogo.setImage(AppImages.PROJECT.getImage());
+            ivLogo.setImage(AppImages.MATRIX.getImage());
         }
 
         textKey.setText(settings.getKey());
         textName.setText(settings.getName());
-    }
-
-    private void loadMatrixes()
-    {
-        flowMatrixes.getChildren().clear();
-
-        for (MatrixSettings nextMatrix: projectInstance.getMatrixes().values())
-        {
-            MatrixInstance nextInstance = projectInstance.getMatrix(nextMatrix.getUID());
-
-            Image imageLogo = nextInstance.getLogo();
-
-            List<String> listLabels = new ArrayList<>();
-            listLabels.add(nextMatrix.getKey());
-            listLabels.add(nextMatrix.getName());
-            listLabels.add(nextMatrix.getUID());
-
-            SIRImageVLabel<MatrixSettings> ir = SIRFactory.createImageVLabel(nextMatrix, imageLogo, 64, listLabels, new SIRListener<MatrixSettings>()
-            {
-                @Override
-                public void onSelect(MatrixSettings matrix)
-                {
-                    AppNavigator.showMatrixViewer(matrix.getAccountKey(), matrix.getProjectUID(), matrix.getUID());
-                }
-            });
-
-            ir.getMainPane().getStyleClass().add("card-status");
-            ir.getLabel(0).getStyleClass().add("card-status-title");
-            ir.getMainPane().getStyleClass().add("clickable");
-            ir.getMainPane().setPadding(new Insets(10, 10, 10, 10));
-
-            flowMatrixes.getChildren().add(ir.getMainPane());
-        }
-    }
-
-    private void loadPlatforms()
-    {
-        flowPlatforms.getChildren().clear();
-
-        for (PlatformSettings nextPlatform: projectInstance.getPlatforms().values())
-        {
-            PlatformInstance nextInstance = projectInstance.getPlatform(nextPlatform.getUID());
-
-            Image imageLogo = nextInstance.getLogo();
-
-            List<String> listLabels = new ArrayList<>();
-            listLabels.add(nextPlatform.getKey());
-            listLabels.add(nextPlatform.getName());
-            listLabels.add(nextPlatform.getUID());
-
-            SIRImageVLabel<PlatformSettings> ir = SIRFactory.createImageVLabel(nextPlatform, imageLogo, 64, listLabels, new SIRListener<PlatformSettings>()
-            {
-                @Override
-                public void onSelect(PlatformSettings platform)
-                {
-                    AppNavigator.showPlatformViewer(platform.getAccountKey(), platform.getProjectUID(), platform.getUID());
-                }
-            });
-
-            ir.getMainPane().getStyleClass().add("card-status");
-            ir.getLabel(0).getStyleClass().add("card-status-title");
-            ir.getMainPane().getStyleClass().add("clickable");
-            ir.getMainPane().setPadding(new Insets(10, 10, 10, 10));
-
-            flowPlatforms.getChildren().add(ir.getMainPane());
-        }
     }
 
 }

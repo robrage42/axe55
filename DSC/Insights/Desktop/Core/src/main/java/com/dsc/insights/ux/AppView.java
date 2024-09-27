@@ -19,6 +19,11 @@ public enum AppView
     ASSESSMENT_CREATE("/com/dsc/insights/ux/account/project/platform/assessment/AssessmentCreate.fxml"),
     ASSESSMENT_VIEWER("/com/dsc/insights/ux/account/project/platform/assessment/AssessmentViewer.fxml"),
 
+    CAPTURE_VIEWER("/com/dsc/insights/ux/account/project/platform/assessment/capture/CaptureViewer.fxml"),
+
+    MATRIX_CREATE("/com/dsc/insights/ux/account/project/matrix/MatrixCreate.fxml"),
+    MATRIX_VIEWER("/com/dsc/insights/ux/account/project/matrix/MatrixViewer.fxml"),
+
     PLATFORM_CREATE("/com/dsc/insights/ux/account/project/platform/PlatformCreate.fxml"),
     PLATFORM_VIEWER("/com/dsc/insights/ux/account/project/platform/PlatformViewer.fxml"),
 

@@ -4,6 +4,8 @@ import com.dsc.insights.AppImages;
 import com.dsc.insights.DSCI;
 import com.dsc.insights.core.account.AccountInstance;
 import com.dsc.insights.core.account.AccountSettings;
+import com.dsc.insights.core.assessment.AssessmentInstance;
+import com.dsc.insights.core.assessment.AssessmentSettings;
 import com.dsc.insights.core.platform.PlatformInstance;
 import com.dsc.insights.core.platform.PlatformSettings;
 import com.dsc.insights.core.project.ProjectInstance;
@@ -16,7 +18,11 @@ import com.pxg.jfx.mwa.IUXView;
 import com.pxg.jfx.mwa.Message;
 import com.pxg.jfx.mwa.MessageLevel;
 import com.pxg.jfx.mwa.UXInstance;
+import com.pxg.jfx.sir.SIRFactory;
+import com.pxg.jfx.sir.SIRImageVLabel;
+import com.pxg.jfx.sir.SIRListener;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,7 +45,7 @@ public class PlatformViewer implements IUXView
     @FXML
     private TextField textName;
     @FXML
-    private FlowPane flowPlatforms;
+    private FlowPane flowAssessments;
 
     private final String APP_VIEW = "PlatformViewer";
 
@@ -185,6 +191,40 @@ public class PlatformViewer implements IUXView
 
         textKey.setText(settings.getKey());
         textName.setText(settings.getName());
+
+        loadAssessments();
     }
 
+    private void loadAssessments()
+    {
+        flowAssessments.getChildren().clear();
+
+        for (AssessmentSettings nextAssessment: platformInstance.getAssessments().values())
+        {
+            AssessmentInstance nextInstance = platformInstance.getAssessment(nextAssessment.getUID());
+
+            Image imageLogo = nextInstance.getLogo();
+
+            List<String> listLabels = new ArrayList<>();
+            listLabels.add(nextAssessment.getKey());
+            listLabels.add(nextAssessment.getName());
+            listLabels.add(nextAssessment.getUID());
+
+            SIRImageVLabel<PlatformSettings> ir = SIRFactory.createImageVLabel(nextAssessment, imageLogo, 64, listLabels, new SIRListener<AssessmentSettings>()
+            {
+                @Override
+                public void onSelect(AssessmentSettings assessment)
+                {
+                    AppNavigator.showAssessmentViewer(assessment.getAccountKey(), assessment.getProjectUID(), assessment.getPlatformUID(), assessment.getUID());
+                }
+            });
+
+            ir.getMainPane().getStyleClass().add("card-status");
+            ir.getLabel(0).getStyleClass().add("card-status-title");
+            ir.getMainPane().getStyleClass().add("clickable");
+            ir.getMainPane().setPadding(new Insets(10, 10, 10, 10));
+
+            flowAssessments.getChildren().add(ir.getMainPane());
+        }
+    }
 }

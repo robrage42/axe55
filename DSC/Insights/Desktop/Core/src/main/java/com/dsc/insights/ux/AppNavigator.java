@@ -87,6 +87,37 @@ public class AppNavigator
         DSCI.getInstance().getUXInstance().navigateTo(AppView.ASSESSMENT_VIEWER.name(), AppView.ASSESSMENT_VIEWER.name(), params, true);
     }
 
+    public static void showCaptureViewer(String accountKey, String projectUID, String platformUID, String assessmentUID, String captureUID)
+    {
+        Map params = new HashMap<>();
+        params.put("ACCOUNT_KEY", accountKey);
+        params.put("PROJECT_UID", projectUID);
+        params.put("PLATFORM_UID", platformUID);
+        params.put("ASSESSMENT_UID", assessmentUID);
+        params.put("CAPTURE_UID", captureUID);
+
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.CAPTURE_VIEWER.name(), AppView.CAPTURE_VIEWER.name(), params, true);
+    }
+
+    public static void showMatrixCreate(String accountKey, String projectUID)
+    {
+        Map params = new HashMap<>();
+        params.put("ACCOUNT_KEY", accountKey);
+        params.put("PROJECT_UID", projectUID);
+
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.MATRIX_CREATE.name(), AppView.MATRIX_CREATE.name(), params, true);
+    }
+
+    public static void showMatrixViewer(String accountKey, String projectUID, String matrixUID)
+    {
+        Map params = new HashMap<>();
+        params.put("ACCOUNT_KEY", accountKey);
+        params.put("PROJECT_UID", projectUID);
+        params.put("MATRIX_UID", matrixUID);
+
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.MATRIX_VIEWER.name(), AppView.MATRIX_VIEWER.name(), params, true);
+    }
+
     public static void showPlatformCreate(String accountKey, String projectUID)
     {
         Map params = new HashMap<>();

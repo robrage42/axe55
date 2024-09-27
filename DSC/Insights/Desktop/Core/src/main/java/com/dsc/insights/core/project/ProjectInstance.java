@@ -2,6 +2,8 @@ package com.dsc.insights.core.project;
 
 import com.dsc.insights.AppImages;
 import com.dsc.insights.DSCI;
+import com.dsc.insights.core.matrix.MatrixInstance;
+import com.dsc.insights.core.matrix.MatrixSettings;
 import com.dsc.insights.core.platform.PlatformInstance;
 import com.dsc.insights.core.platform.PlatformSettings;
 import com.pxg.dio.JSONCommon;
@@ -18,10 +20,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ProjectInstance
 {
     private final File projectDirectory;
+    private final String matrixDir;
     private final String platformsDir;
 
     private ProjectSettings settings;
     private Image imageLogo;
+
+    private Map<String, MatrixSettings> matrixes;
+    private Map<String, MatrixInstance> matrixInstances;
 
     private Map<String, PlatformSettings> platforms;
     private Map<String, PlatformInstance> platformInstances;
@@ -30,11 +36,13 @@ public class ProjectInstance
     {
         projectDirectory = inDirectory;
         platformsDir = projectDirectory.getPath() + "/platforms/";
+        matrixDir = projectDirectory.getPath() + "/matrix/";
 
         File fileConfig = new File(projectDirectory, "settings.json");
         String jsonContent = FileCommon.getInstance().readFile(fileConfig, "UTF-8");
         settings = (ProjectSettings) JSONCommon.getInstance().deserialize(jsonContent, ProjectSettings.class);
 
+        loadMatrixes();
         loadPlatforms();
     }
 
@@ -92,6 +100,70 @@ public class ProjectInstance
         }
 
         return false;
+    }
+
+    public Map<String, MatrixSettings> getMatrixes()
+    {
+        return matrixes;
+    }
+
+    public MatrixInstance getMatrix(String matrixUID)
+    {
+        if (matrixInstances.containsKey(matrixUID) == false)
+        {
+            String matrixDirPath = matrixDir + matrixUID + "/";
+            File matrixDir = new File(matrixDirPath);
+            if (matrixDir.exists() == false)
+            {
+                return null;
+            }
+
+            MatrixInstance instance = new MatrixInstance(matrixDir);
+            matrixInstances.put(matrixUID, instance);
+        }
+        return matrixInstances.get(matrixUID);
+    }
+
+    public boolean createMatrix(MatrixSettings matrix)
+    {
+        if (matrixes.containsKey(matrix.getUID()))
+        {
+            return true;
+        }
+
+        matrix.setAccountKey(settings.getAccountKey());
+        matrix.setProjectUID(settings.getUID());
+
+        String matrixSettingsPath = matrixDir + "/" + matrix.getUID() + "/settings.json";
+
+        FileCommon.getInstance().makeDirectory(matrixSettingsPath);
+
+        File fileMatrixSettings = new File(matrixSettingsPath);
+        String jsonSettings = JSONCommon.getInstance().serialize(matrix);
+
+        FileCommon.getInstance().writeFile(fileMatrixSettings, jsonSettings, "UTF-8");
+
+        matrixes.put(matrix.getUID(), matrix);
+
+        return true;
+    }
+
+    public boolean deleteMatrix(String matrixUID)
+    {
+        String matrixDirPath = matrixDir + matrixUID + "/";
+        File matrixDir = new File(matrixDirPath);
+        if (matrixDir.exists() == false)
+        {
+            return false;
+        }
+
+        boolean deleted = FileCommon.getInstance().deleteDirectory(matrixDirPath);
+        if (deleted == true)
+        {
+            matrixes.remove(matrixUID);
+            matrixInstances.remove(matrixUID);
+        }
+        return deleted;
     }
 
     public Map<String, PlatformSettings> getPlatforms()
@@ -183,4 +255,29 @@ public class ProjectInstance
         }
     }
 
+    private void loadMatrixes()
+    {
+        matrixes = new ConcurrentHashMap<>();
+        matrixInstances = new ConcurrentHashMap<>();
+
+        File dirMatrixes = new File(matrixDir);
+        if (dirMatrixes.exists() == false)
+        {
+            FileCommon.getInstance().makeDirectory(dirMatrixes);
+        }
+
+        for (File nextMatrixDir : dirMatrixes.listFiles())
+        {
+            if (nextMatrixDir.isDirectory() == true)
+            {
+                File fileSettings = new File(nextMatrixDir, "settings.json");
+                if (fileSettings.exists() == true)
+                {
+                    MatrixSettings addSettings = new MatrixSettings(nextMatrixDir);
+
+                    matrixes.put(addSettings.getUID(), addSettings);
+                }
+            }
+        }
+    }
 }

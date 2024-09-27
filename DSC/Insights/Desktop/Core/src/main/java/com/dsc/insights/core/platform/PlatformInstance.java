@@ -35,7 +35,7 @@ public class PlatformInstance
         String jsonContent = FileCommon.getInstance().readFile(fileConfig, "UTF-8");
         settings = (PlatformSettings) JSONCommon.getInstance().deserialize(jsonContent, PlatformSettings.class);
 
-        loadPlatforms();
+        loadAssessments();
     }
 
     public PlatformSettings getSettings()
@@ -69,7 +69,7 @@ public class PlatformInstance
 
         if (imageLogo == null)
         {
-            imageLogo = AppImages.PROJECT.getImage();
+            imageLogo = AppImages.PLATFORM.getImage();
         }
 
         return imageLogo;
@@ -159,7 +159,7 @@ public class PlatformInstance
         return deleted;
     }
 
-    private void loadPlatforms()
+    private void loadAssessments()
     {
         assessments = new ConcurrentHashMap<>();
         assessmentInstances = new ConcurrentHashMap<>();
@@ -184,5 +184,4 @@ public class PlatformInstance
             }
         }
     }
-
 }

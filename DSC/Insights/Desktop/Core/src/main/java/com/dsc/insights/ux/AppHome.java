@@ -1,7 +1,6 @@
 package com.dsc.insights.ux;
 
 import com.dsc.insights.DSCI;
-import com.dsc.insights.core.account.AccountInstance;
 import com.dsc.insights.core.account.AccountSettings;
 import com.pxg.jfx.controls.IBreadcrumbListener;
 import com.pxg.jfx.mwa.IUXView;
@@ -136,7 +135,9 @@ public class AppHome implements IUXView
                 }
             });
 
+            ir.getMainPane().setPrefWidth(300);
             ir.getMainPane().getStyleClass().add("card-status");
+            ir.getLabel(0).getStyleClass().add("card-status-title");
             ir.getMainPane().getStyleClass().add("clickable");
             ir.getMainPane().setPadding(new Insets(10, 10, 10, 10));
 

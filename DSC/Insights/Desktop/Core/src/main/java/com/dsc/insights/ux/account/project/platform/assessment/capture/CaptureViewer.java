@@ -1,4 +1,4 @@
-package com.dsc.insights.ux.account.project.platform.assessment;
+package com.dsc.insights.ux.account.project.platform.assessment.capture;
 
 import com.dsc.insights.AppImages;
 import com.dsc.insights.DSCI;
@@ -6,35 +6,26 @@ import com.dsc.insights.core.account.AccountInstance;
 import com.dsc.insights.core.account.AccountSettings;
 import com.dsc.insights.core.assessment.AssessmentInstance;
 import com.dsc.insights.core.assessment.AssessmentSettings;
-import com.dsc.insights.core.capture.CaptureSettings;
+import com.dsc.insights.core.capture.CaptureInstance;
 import com.dsc.insights.core.platform.PlatformInstance;
 import com.dsc.insights.core.project.ProjectInstance;
 import com.dsc.insights.ux.AppNavigator;
 import com.dsc.insights.ux.AppUXController;
 import com.pxg.jfx.controls.IBreadcrumbListener;
-import com.pxg.jfx.controls.IImageViewListener;
-import com.pxg.jfx.controls.ImageViewEditor;
 import com.pxg.jfx.mwa.IUXView;
-import com.pxg.jfx.mwa.Message;
-import com.pxg.jfx.mwa.MessageLevel;
 import com.pxg.jfx.mwa.UXInstance;
-import com.pxg.jfx.sir.SIRFactory;
-import com.pxg.jfx.sir.SIRImageVLabel;
-import com.pxg.jfx.sir.SIRListener;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AssessmentViewer implements IUXView
+public class CaptureViewer implements IUXView
 {
     @FXML
     private VBox boxMain;
@@ -45,9 +36,9 @@ public class AssessmentViewer implements IUXView
     @FXML
     private TextField textName;
     @FXML
-    private FlowPane flowCaptures;
+    private FlowPane flowDetails;
 
-    private final String APP_VIEW = "AssessmentViewer";
+    private final String APP_VIEW = "CaptureViewer";
 
     private UXInstance uxInstance;
     private AppUXController appController;
@@ -56,30 +47,19 @@ public class AssessmentViewer implements IUXView
     private String projectUID;
     private String platformUID;
     private String assessmentUID;
+    private String captureUID;
 
     private AccountInstance accountInstance;
     private AccountSettings accountSettings;
     private ProjectInstance projectInstance;
     private PlatformInstance platformInstance;
     private AssessmentInstance assessmentInstance;
+    private CaptureInstance captureInstance;
 
     @FXML
     private void initialize()
     {
-        ImageViewEditor.getInstance().register(ivLogo, new IImageViewListener()
-        {
-            @Override
-            public void onImageLoaded(BufferedImage bi, String sourceURL)
-            {
-                boolean saved = assessmentInstance.saveLogo(bi);
-                if (saved == false)
-                {
-                    uxInstance.showMessage(new Message(MessageLevel.ERROR, APP_VIEW, "Error updating logo", 5000));
-                    return;
-                }
-                uxInstance.showMessage(new Message(MessageLevel.STATUS, APP_VIEW, "Logo updated", 5000));
-            }
-        });
+
     }
 
     @Override
@@ -98,12 +78,14 @@ public class AssessmentViewer implements IUXView
         projectUID = (String)params.get("PROJECT_UID");
         platformUID = (String)params.get("PLATFORM_UID");
         assessmentUID = (String)params.get("ASSESSMENT_UID");
+        captureUID = (String)params.get("CAPTURE_UID");
 
         accountInstance = DSCI.getInstance().getAccountMananger().getAccount(accountKey);
         accountSettings = accountInstance.getSettings();
         projectInstance = accountInstance.getProject(projectUID);
         platformInstance = projectInstance.getPlatform(platformUID);
         assessmentInstance = platformInstance.getAssessment(assessmentUID);
+        captureInstance = assessmentInstance.getCapture(captureUID);
 
         loadUX();
 
@@ -159,6 +141,8 @@ public class AssessmentViewer implements IUXView
         labels.add(platformInstance.getSettings().getName());
         labels.add("Assessments");
         labels.add(assessmentInstance.getSettings().getName());
+        labels.add("Captures");
+        labels.add(captureInstance.getSettings().getName());
 
         appController.getAppHeader().loadBreadcrumb(labels, new IBreadcrumbListener()
         {
@@ -177,9 +161,13 @@ public class AssessmentViewer implements IUXView
                 {
                     AppNavigator.showProjectViewer(accountKey, projectUID);
                 }
-                else
+                else if (pos == 6 || pos == 7)
                 {
                     AppNavigator.showPlatformViewer(accountKey, projectUID, platformUID);
+                }
+                else
+                {
+                    AppNavigator.showAssessmentViewer(accountKey, projectUID, platformUID, assessmentUID);
                 }
             }
         });
@@ -202,38 +190,12 @@ public class AssessmentViewer implements IUXView
         textKey.setText(settings.getKey());
         textName.setText(settings.getName());
 
-        loadCaptures();
+        loadDetails();
     }
 
-    private void loadCaptures()
+    private void loadDetails()
     {
-        flowCaptures.getChildren().clear();
-
-        for (CaptureSettings nextCapture: assessmentInstance.getCaptures().values())
-        {
-            List<String> listLabels = new ArrayList<>();
-            listLabels.add(nextCapture.getTypeKey());
-            listLabels.add(nextCapture.getName());
-            listLabels.add(nextCapture.getUID());
-
-            Image imageCapture = AppImages.CAPTURE.getImage();
-
-            SIRImageVLabel<CaptureSettings> ir = SIRFactory.createImageVLabel(nextCapture, imageCapture, 32, listLabels, new SIRListener<CaptureSettings>()
-            {
-                @Override
-                public void onSelect(CaptureSettings captureSettings)
-                {
-                    AppNavigator.showCaptureViewer(captureSettings.getAccountKey(), captureSettings.getProjectUID(), captureSettings.getPlatformUID(), captureSettings.getAssessmentUID(), captureSettings.getUID());
-                }
-            });
-
-            ir.getMainPane().getStyleClass().add("card-status");
-            ir.getLabel(0).getStyleClass().add("card-status-title");
-            ir.getMainPane().getStyleClass().add("clickable");
-            ir.getMainPane().setPadding(new Insets(10, 10, 10, 10));
-
-            flowCaptures.getChildren().add(ir.getMainPane());
-        }
+        flowDetails.getChildren().clear();
     }
 
 }

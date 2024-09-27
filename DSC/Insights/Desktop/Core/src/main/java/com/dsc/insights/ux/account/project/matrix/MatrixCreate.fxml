@@ -5,7 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<VBox fx:id="boxMain" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dsc.insights.ux.account.project.platform.PlatformCreate">
+<VBox fx:id="boxMain" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dsc.insights.ux.account.project.matrix.MatrixCreate">
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
     </padding>
@@ -17,7 +17,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </padding>
                     <children>
-                        <Label styleClass="section-title" text="Create a Platform" />
+                        <Label styleClass="section-title" text="Create a Matrix" />
                     </children>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="5.0">
@@ -26,7 +26,7 @@
                             <children>
                                 <ImageView fx:id="ivLogo" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@/com/dsc/insights/icons/platform.png" />
+                                        <Image url="@/com/dsc/insights/icons/matrix.png" />
                                     </image>
                                 </ImageView>
                             </children>
