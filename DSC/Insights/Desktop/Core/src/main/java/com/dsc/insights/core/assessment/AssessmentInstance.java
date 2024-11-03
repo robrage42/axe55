@@ -43,6 +43,16 @@ public class AssessmentInstance
         return settings;
     }
 
+    public File getAssessmentDirectory()
+    {
+        return assessmentDirectory;
+    }
+
+    public String getCapturesDir()
+    {
+        return capturesDir;
+    }
+
     public boolean save()
     {
         String jsonConfig = JSONCommon.getInstance().serialize(settings);

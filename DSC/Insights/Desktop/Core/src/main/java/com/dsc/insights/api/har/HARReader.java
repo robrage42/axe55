@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class HARReader
@@ -27,8 +28,8 @@ public class HARReader
     {
         fileInput = inFile;
 
-        pages = new HashMap<>();
-        calls = new HashMap<>();
+        pages = new LinkedHashMap<>();
+        calls = new LinkedHashMap<>();
 
         try
         {

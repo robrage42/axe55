@@ -11,7 +11,7 @@ public class AppNavigator
     {
         Map params = new HashMap<>();
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.ACCOUNT_CREATE.name(), AppView.ACCOUNT_CREATE.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.ACCOUNT_CREATE.name(), AppView.ACCOUNT_CREATE.name(), "", params, false);
     }
 
     public static void showAccountViewer(String accountKey)
@@ -19,7 +19,7 @@ public class AppNavigator
         Map params = new HashMap<>();
         params.put("ACCOUNT_KEY", accountKey);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.ACCOUNT_VIEWER.name(), AppView.ACCOUNT_VIEWER.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.ACCOUNT_VIEWER.name(), AppView.ACCOUNT_VIEWER.name(), "", params, false);
     }
 
     public static void showAccountProfile(String accountKey)
@@ -27,21 +27,21 @@ public class AppNavigator
         Map params = new HashMap<>();
         params.put("ACCOUNT_KEY", accountKey);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.ACCOUNT_PROFILE.name(), AppView.ACCOUNT_PROFILE.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.ACCOUNT_PROFILE.name(), AppView.ACCOUNT_PROFILE.name(), "", params, false);
     }
 
     public static void showAppLaunch()
     {
         Map params = new HashMap<>();
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.APP_LAUNCH.name(), AppView.APP_LAUNCH.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.APP_LAUNCH.name(), AppView.APP_LAUNCH.name(), "", params, false);
     }
 
     public static void showAppHome()
     {
         Map params = new HashMap<>();
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.APP_HOME.name(), AppView.APP_HOME.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.APP_HOME.name(), AppView.APP_HOME.name(), "", params, false);
     }
 
     public static void showAppSettings(boolean fromLaunch)
@@ -49,21 +49,21 @@ public class AppNavigator
         Map params = new HashMap<>();
         params.put("FROM_LAUNCH", fromLaunch);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.APP_SETTINGS.name(), AppView.APP_SETTINGS.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.APP_SETTINGS.name(), AppView.APP_SETTINGS.name(), "", params, false);
     }
 
     public static void showAppLogin()
     {
         Map params = new HashMap<>();
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.APP_LOGIN.name(), AppView.APP_LOGIN.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.APP_LOGIN.name(), AppView.APP_LOGIN.name(), "", params, false);
     }
 
     public static void showAppUserSettings()
     {
         Map params = new HashMap<>();
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.APP_USER_SETTINGS.name(), AppView.APP_USER_SETTINGS.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.APP_USER_SETTINGS.name(), AppView.APP_USER_SETTINGS.name(), "", params, false);
     }
 
     public static void showAssessmentCreate(String accountKey, String projectUID, String platformUID)
@@ -73,7 +73,7 @@ public class AppNavigator
         params.put("PROJECT_UID", projectUID);
         params.put("PLATFORM_UID", platformUID);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.ASSESSMENT_CREATE.name(), AppView.ASSESSMENT_CREATE.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.ASSESSMENT_CREATE.name(), AppView.ASSESSMENT_CREATE.name(), "", params, false);
     }
 
     public static void showAssessmentViewer(String accountKey, String projectUID, String platformUID, String assessmentUID)
@@ -84,7 +84,7 @@ public class AppNavigator
         params.put("PLATFORM_UID", platformUID);
         params.put("ASSESSMENT_UID", assessmentUID);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.ASSESSMENT_VIEWER.name(), AppView.ASSESSMENT_VIEWER.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.ASSESSMENT_VIEWER.name(), AppView.ASSESSMENT_VIEWER.name(), "", params, false);
     }
 
     public static void showCaptureViewer(String accountKey, String projectUID, String platformUID, String assessmentUID, String captureUID)
@@ -96,7 +96,7 @@ public class AppNavigator
         params.put("ASSESSMENT_UID", assessmentUID);
         params.put("CAPTURE_UID", captureUID);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.CAPTURE_VIEWER.name(), AppView.CAPTURE_VIEWER.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.CAPTURE_VIEWER.name(), AppView.CAPTURE_VIEWER.name(), "", params, false);
     }
 
     public static void showMatrixCreate(String accountKey, String projectUID)
@@ -105,7 +105,7 @@ public class AppNavigator
         params.put("ACCOUNT_KEY", accountKey);
         params.put("PROJECT_UID", projectUID);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.MATRIX_CREATE.name(), AppView.MATRIX_CREATE.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.MATRIX_CREATE.name(), AppView.MATRIX_CREATE.name(), "", params, false);
     }
 
     public static void showMatrixViewer(String accountKey, String projectUID, String matrixUID)
@@ -115,7 +115,7 @@ public class AppNavigator
         params.put("PROJECT_UID", projectUID);
         params.put("MATRIX_UID", matrixUID);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.MATRIX_VIEWER.name(), AppView.MATRIX_VIEWER.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.MATRIX_VIEWER.name(), AppView.MATRIX_VIEWER.name(), "", params, false);
     }
 
     public static void showPlatformCreate(String accountKey, String projectUID)
@@ -124,7 +124,7 @@ public class AppNavigator
         params.put("ACCOUNT_KEY", accountKey);
         params.put("PROJECT_UID", projectUID);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.PLATFORM_CREATE.name(), AppView.PLATFORM_CREATE.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.PLATFORM_CREATE.name(), AppView.PLATFORM_CREATE.name(), "", params, false);
     }
 
     public static void showPlatformViewer(String accountKey, String projectUID, String platformUID)
@@ -134,7 +134,7 @@ public class AppNavigator
         params.put("PROJECT_UID", projectUID);
         params.put("PLATFORM_UID", platformUID);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.PLATFORM_VIEWER.name(), AppView.PLATFORM_VIEWER.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.PLATFORM_VIEWER.name(), AppView.PLATFORM_VIEWER.name(), "", params, false);
     }
 
     public static void showProjectCreate(String accountKey)
@@ -142,7 +142,7 @@ public class AppNavigator
         Map params = new HashMap<>();
         params.put("ACCOUNT_KEY", accountKey);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.PROJECT_CREATE.name(), AppView.PROJECT_CREATE.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.PROJECT_CREATE.name(), AppView.PROJECT_CREATE.name(), "", params, false);
     }
 
     public static void showProjectViewer(String accountKey, String projectUID)
@@ -151,7 +151,7 @@ public class AppNavigator
         params.put("ACCOUNT_KEY", accountKey);
         params.put("PROJECT_UID", projectUID);
 
-        DSCI.getInstance().getUXInstance().navigateTo(AppView.PROJECT_VIEWER.name(), AppView.PROJECT_VIEWER.name(), params, true);
+        DSCI.getInstance().getUXInstance().navigateTo(AppView.PROJECT_VIEWER.name(), AppView.PROJECT_VIEWER.name(), "", params, false);
     }
 }
 

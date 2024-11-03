@@ -2,6 +2,9 @@ package com.dsc.insights.ux.account.project.platform.assessment;
 
 import com.dsc.insights.AppImages;
 import com.dsc.insights.DSCI;
+import com.dsc.insights.api.har.HARReader;
+import com.dsc.insights.api.har.HARSession;
+import com.dsc.insights.api.har.HARSessionCall;
 import com.dsc.insights.core.account.AccountInstance;
 import com.dsc.insights.core.account.AccountSettings;
 import com.dsc.insights.core.assessment.AssessmentInstance;
@@ -11,6 +14,9 @@ import com.dsc.insights.core.platform.PlatformInstance;
 import com.dsc.insights.core.project.ProjectInstance;
 import com.dsc.insights.ux.AppNavigator;
 import com.dsc.insights.ux.AppUXController;
+import com.pxg.commons.UIDCommon;
+import com.pxg.dio.JSONCommon;
+import com.pxg.dio.file.FileCommon;
 import com.pxg.jfx.controls.IBreadcrumbListener;
 import com.pxg.jfx.controls.IImageViewListener;
 import com.pxg.jfx.controls.ImageViewEditor;
@@ -21,6 +27,7 @@ import com.pxg.jfx.mwa.UXInstance;
 import com.pxg.jfx.sir.SIRFactory;
 import com.pxg.jfx.sir.SIRImageVLabel;
 import com.pxg.jfx.sir.SIRListener;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
@@ -28,8 +35,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -133,7 +143,14 @@ public class AssessmentViewer implements IUXView
     @FXML
     private void onImport()
     {
-
+        DSCI.getUXThreadPool().submit(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                importHAR();
+            }
+        });
     }
 
     private void layoutUX(long showTime, boolean onResize)
@@ -236,4 +253,59 @@ public class AssessmentViewer implements IUXView
         }
     }
 
+    private void importHAR()
+    {
+        FileChooser fc = new FileChooser();
+        fc.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("HAR", ".har"));
+        fc.setTitle("Import HAR File");
+        List<File> importFiles = fc.showOpenMultipleDialog(uxInstance.getStage());
+
+        if (importFiles == null || importFiles.size() == 0)
+        {
+            return;
+        }
+
+        String captureUID = UIDCommon.getInstance().create();
+
+        CaptureSettings captureSettings = new CaptureSettings();
+        captureSettings.setUID(captureUID);
+        captureSettings.setTypeKey("HAR");
+
+        assessmentInstance.createCapture(captureSettings);
+
+        String capturesRoot = assessmentInstance.getCapturesDir();
+        String capturePath = capturesRoot + "/" + captureUID + "/http/";
+        FileCommon.getInstance().makeDirectory(capturePath);
+
+        for (File nextFile: importFiles)
+        {
+            HARReader reader = new HARReader();
+            HARSession session = reader.load(nextFile);
+            if (session == null)
+            {
+                continue;
+            }
+
+            String inputName = nextFile.getName();
+
+            for (int nextCallID: session.getCalls().keySet())
+            {
+                HARSessionCall nextCall = session.getCalls().get(nextCallID);
+
+                String captureName = inputName + "_" + nextCallID + ".json";
+                String jsonCall = JSONCommon.getInstance().serialize(nextCall);
+                File fileCapture = new File(capturePath, captureName);
+                FileCommon.getInstance().writeFile(fileCapture, jsonCall, "UTF-8");
+            }
+        }
+
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                loadCaptures();
+            }
+        });
+    }
 }
